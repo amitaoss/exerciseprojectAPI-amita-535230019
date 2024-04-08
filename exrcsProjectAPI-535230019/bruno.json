@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "exrcsProjectAPI-535230019",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
