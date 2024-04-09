@@ -150,9 +150,9 @@ const errorTypes = {
     code: 'UNPROCESSABLE_ENTITY_ERROR',
   },
   DB_DUPLICATE_CONFLICT: {
-    description: 'Duplicate conflict. Resource already exists',
+    description: 'This email is already taken.',
     status: 409,
-    code: 'DB_DUPLICATE_CONFLICT_ERROR',
+    code: 'EMAIL_ALREADY_TAKEN_ERROR',
   },
   DB_NOTNULL_CONFLICT: {
     description: 'Not null conflict',

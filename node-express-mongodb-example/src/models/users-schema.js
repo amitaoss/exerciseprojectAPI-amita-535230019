@@ -1,7 +1,7 @@
-const usersSchema = {
+const User = {
   name: String,
   email: String,
   password: String,
 };
 
-module.exports = usersSchema;
+module.exports = User;

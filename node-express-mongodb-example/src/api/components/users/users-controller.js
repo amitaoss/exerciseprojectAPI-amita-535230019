@@ -55,15 +55,12 @@ async function createUser(request, response, next) {
     const emailExists = await usersService.emailExists(email);
     if (emailExists) {
       throw errorResponder(
-        errorTypes.UNPROCESSABLE_ENTITY,
+        errorTypes.DB_DUPLICATE_CONFLICT,
         'Email already exists'
       );
     }
 
-    //Hash password
-    const hashedPassword = await hashPassword(password);
-
-    const success = await usersService.createUser(name, email, password);
+    const success = await usersService.createUser(name, email, hashedPassword);
     if (!success) {
       throw errorResponder(
         errorTypes.UNPROCESSABLE_ENTITY,
