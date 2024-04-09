@@ -50,6 +50,15 @@ async function createUser(request, response, next) {
     const name = request.body.name;
     const email = request.body.email;
     const password = request.body.password;
+    const passwordConfirm = request.body.password_confirm;
+
+    //Check if password and password confirmation match
+    if (password !== passwordConfirm) {
+      throw errorResponder(
+        errorTypes.INVALID_PASSWORD,
+        'Password & password confirm do not match'
+      );
+    }
 
     //Check if email already exist
     const emailExists = await usersService.emailExists(email);
@@ -86,6 +95,15 @@ async function updateUser(request, response, next) {
     const id = request.params.id;
     const name = request.body.name;
     const email = request.body.email;
+
+    //Check if email already exist
+    const emailExists = await usersService.emailExists(email);
+    if (emailExists) {
+      throw errorResponder(
+        errorTypes.DB_DUPLICATE_CONFLICT,
+        'Email already exists'
+      );
+    }
 
     const success = await usersService.updateUser(id, name, email);
     if (!success) {
