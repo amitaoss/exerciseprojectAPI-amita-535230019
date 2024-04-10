@@ -1,0 +1,24 @@
+meta {
+  name: Change Pass
+  type: http
+  seq: 6
+}
+
+patch {
+  url: http://localhost:5000/api/users/66116cede9dde2597ec21e87/change-password
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwidXNlcklkIjoiNjYxMTZjZWRlOWRkZTI1OTdlYzIxZTg3IiwiaWF0IjoxNzEyNjc4NTIxLCJleHAiOjE3MTI3NjQ5MjF9.PMwL3imi42Ho4t7jAucZbMcnJpLCps15fazcM1JsRrU
+}
+
+body:json {
+  {
+    "id": "66116cede9dde2597ec21e87",
+    "oldPassword": "123456",
+    "newPassword": "tester001",
+    "password_confirm": "tester001"
+  }
+}

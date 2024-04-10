@@ -144,10 +144,53 @@ async function deleteUser(request, response, next) {
   }
 }
 
+async function chpassUser(request, response, next) {
+  try {
+    const id = request.params.id;
+    const oldPassword = request.body.oldPassword;
+    const newPassword = request.body.newPassword;
+    const passwordConfirm = request.body.password_confirm;
+    const diffPass = await usersService.diffPass(oldPassword);
+    //throw error if old password different from database
+    if (diffPass) {
+      throw errorResponder(
+        errorTypes.INVALID_PASSWORD,
+        'Old Password is different'
+      );
+    }
+
+    //new password should match confirm password or throw error
+    if (passwordConfirm !== newPassword) {
+      throw errorResponder(
+        errorTypes.INVALID_PASSWORD,
+        'New password & confirm password do not match'
+      );
+    }
+
+    const success = await usersService.chpassUser(
+      id,
+      oldPassword,
+      newPassword,
+      password_confirm
+    );
+    if (!success) {
+      throw errorResponder(
+        errorTypes.UNPROCESSABLE_ENTITY,
+        'Failed to update password'
+      );
+    }
+
+    return response.status(200).json({ id });
+  } catch (error) {
+    return next(error);
+  }
+}
+
 module.exports = {
   getUsers,
   getUser,
   createUser,
   updateUser,
   deleteUser,
+  chpassUser,
 };

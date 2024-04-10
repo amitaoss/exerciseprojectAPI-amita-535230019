@@ -107,6 +107,38 @@ async function deleteUser(id) {
   return true;
 }
 
+async function diffPass(oldPassword) {
+  try {
+    await usersRepository.diffPass;
+  } catch (err) {
+    return err;
+  }
+}
+
+async function chpassUser(id, oldPassword, newPassword, passwordConfirm) {
+  //find user using id
+  const user = await usersRepository.getUser(id);
+
+  //user not found
+  if (!user) {
+    return null;
+  }
+
+  //Hash password
+  const hashedPassword = await hashPassword(newPassword);
+  try {
+    await usersRepository.chpassUser(
+      id,
+      oldPassword,
+      hashedPassword,
+      passwordConfirm
+    );
+  } catch (err) {
+    return null;
+  }
+  return true;
+}
+
 /**
  * Check if user with the given email already exists
  * @param {string} email - User email
@@ -122,5 +154,7 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
+  diffPass,
+  chpassUser,
   emailExists,
 };

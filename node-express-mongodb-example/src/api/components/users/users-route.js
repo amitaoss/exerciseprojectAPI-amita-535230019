@@ -10,6 +10,12 @@ const route = express.Router();
 module.exports = (app) => {
   app.use('/users', route);
 
+  route.patch(
+    '/users/:id/change-password',
+    authenticationMiddleware,
+    usersControllers.chpassUser
+  );
+
   // Get list of users
   route.get('/', authenticationMiddleware, usersControllers.getUsers);
 

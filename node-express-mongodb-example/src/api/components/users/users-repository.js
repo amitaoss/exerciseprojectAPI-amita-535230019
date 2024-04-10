@@ -1,4 +1,6 @@
 const { User } = require('../../../models');
+const { password } = require('../../../models/users-schema');
+const { passwordMatched } = require('../../../utils/password');
 
 /**
  * Get a list of users
@@ -77,6 +79,28 @@ async function deleteUser(id) {
   return User.deleteOne({ _id: id });
 }
 
+//checkk if password match
+async function diffPass(oldPassword) {
+  const pass = await passwordMatched(oldPassword, User.password);
+  if (pass.length > 0) {
+    return false;
+  }
+  return true;
+}
+
+async function chpassUser(id, oldPassword, newPassword, passwordConfirm) {
+  return User.updateOne(
+    {
+      _id: id,
+    },
+    {
+      $set: {
+        password: newPassword,
+      },
+    }
+  );
+}
+
 module.exports = {
   getUsers,
   getUser,
@@ -84,4 +108,6 @@ module.exports = {
   updateUser,
   deleteUser,
   emailExists,
+  diffPass,
+  chpassUser,
 };
